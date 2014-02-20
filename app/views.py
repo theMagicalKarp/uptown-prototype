@@ -5,7 +5,6 @@ import json
 from flask import Blueprint
 from flask import render_template
 from flask import request
-from flask import Response
 
 from app.models import student
 
@@ -44,10 +43,26 @@ def model_example():
     all_students = student.fetch_students()
     return render_template('modeling.html', students=all_students)
 
+@blueprint.route('/chart_demo', methods=['GET'])
+def chart_demo():
+    return render_template('chart.html')
+
 
 @blueprint.route('/post_student', methods=['POST'])
 def post_student():
     student_data = json.loads(request.data)
     student.create_student(student_data['name'], student_data['age'])
     return 'success!', 200
+
+@blueprint.route('/student_graph_data', methods=['GET'])
+def get_graph_data():
+    students = student.fetch_students()
+
+    age_distribution = {}
+    for s in students:
+        age_distribution[s.age] = age_distribution.get(s.age, 0) + 1
+    
+    return json.dumps({
+        'age_distribution': age_distribution
+    })
 

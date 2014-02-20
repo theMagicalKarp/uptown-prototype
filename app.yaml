@@ -18,6 +18,8 @@ handlers:
   script: app.app
 
 
-libraries:
+# these are python libararies built into gae
+# https://developers.google.com/appengine/docs/python/tools/libraries27
+libraries: 
 - name: jinja2
   version: "2.6"
