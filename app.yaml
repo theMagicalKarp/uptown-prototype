@@ -1,3 +1,4 @@
+# yaml documentation https://developers.google.com/appengine/docs/python/config/appconfig
 application: uptown-prototype
 version: 1
 runtime: python27

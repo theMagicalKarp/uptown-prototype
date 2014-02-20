@@ -14,6 +14,7 @@ blueprint = Blueprint('views', __name__)
 
 @blueprint.route('/', methods=['GET'])
 def home():
+    # chooses a random youtube link to display on the home page!
     youtube_links = [
         'NNXQAp0m5nA',
         'EDXMrLoME8U',
@@ -32,9 +33,11 @@ def home():
     ]
     return render_template('home.html', youtube_link=random.choice(youtube_links))
 
+
 @blueprint.route('/bootstrap', methods=['GET'])
 def bootstrap():
     return render_template('bootstrap_examples.html')
+
 
 @blueprint.route('/model_example', methods=['GET'])
 def model_example():
