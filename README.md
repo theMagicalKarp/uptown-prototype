@@ -11,10 +11,10 @@ Setting Up
 
 Libraries Used
 -----------
-* [Flask](http://flask.pocoo.org/)
-* [Jinja2](http://jinja.pocoo.org/)
-* [Bootstrap](http://getbootstrap.com/)
-* [jQuery](http://jquery.com/)
+* [Flask](http://flask.pocoo.org/) *URL Routing*
+* [Jinja2](http://jinja.pocoo.org/) *HTML templating*
+* [Bootstrap](http://getbootstrap.com/) *HTML Styling*
+* [jQuery](http://jquery.com/) *Wrapper for JavaScript... Also required for bootstrap... D:*
 
 What's Going On?!
 -----------
