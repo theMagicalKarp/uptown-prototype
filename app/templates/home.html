@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block css %}
+<style type="text/css">
+  img {
+      width: 100px;
+      height: 100px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="starter-template">
+  <h1>Uptown Saturday Night</h1>
+  <p class="lead">Welcome to our project!</p>
+<iframe width="560" height="315" src="//www.youtube.com/embed/{{ youtube_link }}" frameborder="0" allowfullscreen></iframe>
+</div>
+{% endblock %}
+
+{% block js %}{% endblock %}
