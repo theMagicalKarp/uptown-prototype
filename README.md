@@ -19,7 +19,7 @@ Libraries Used
 
 What's Going On?!
 -----------
-[__/app.yaml:__](https://github.com/theMagicalKarp/uptown-prototype/blob/master/app.yaml) Basic config that Google App Engine uses to understands how to run our application. 
+[__/app.yaml:__](https://github.com/theMagicalKarp/uptown-prototype/blob/master/app.yaml) Basic config that Google App Engine uses to understands how to run our application. This is the first thing ran when starting the server.
 
 [__/libs/:__](https://github.com/theMagicalKarp/uptown-prototype/tree/master/libs) Contains external python libraries such as Flask, werkzeug, ect...
 
