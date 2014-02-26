@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+
 
     <title>{% block title %}{% endblock %}</title>
 
@@ -16,7 +16,7 @@
       }
       .container {
         width: auto;
-        max-width: 680px;
+        max-width: 767px;
         padding: 0 15px;
       }
     </style>
@@ -34,14 +34,25 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{ url_for('views.home') }}">Uptown Saturday Night</a>
+          
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class=""><a href="{{ url_for('views.home') }}">Home</a></li>
-            <li class=""><a href="{{ url_for('views.bootstrap') }}">Bootstrap</a></li>
-            <li class=""><a href="{{ url_for('views.model_example') }}">Modeling</a></li>
-            <li class=""><a href="{{ url_for('views.chart_demo') }}">Chart Demo</a></li>
+            <li class="{%if request.path == url_for('views.home')%}active{%endif%}"><a href="{{ url_for('views.home') }}">Home</a></li>
+            <li class="{%if request.path == url_for('views.model_example')%}active{%endif%}"><a href="{{ url_for('views.model_example') }}">Modeling</a></li>
+            <li class="{%if request.path == url_for('views.chart_demo')%}active{%endif%}"><a href="{{ url_for('views.chart_demo') }}">Chart Demo</a></li>
+            {% if current_user.is_authenticated() and current_user.is_admin() %}
+              <li class="{%if request.path == url_for('views.admin')%}active{%endif%}"><a href="{{ url_for('views.admin') }}">Admin</a></li>
+            {% endif %}
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            {% if current_user.is_authenticated() %}
+              <li class="" ><a class="disable" href="#">{{ current_user.email }}</a></li>
+              <li class=""><a href="{{ url_for('views.logout') }}">Logout</a></li>
+            {% else %}
+              <li class="{%if request.path == url_for('views.login')%}active{%endif%}"><a href="{{ url_for('views.login') }}">Login</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -53,6 +64,13 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('a.disable').click(function(e) {
+          e.preventDefault();
+        });
+      });
+    </script>
     {% block js %}{% endblock %}
   </body>
 </html>
