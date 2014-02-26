@@ -8,7 +8,7 @@
     browsers.
 
 
-    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2011 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 import re
@@ -18,9 +18,7 @@ class UserAgentParser(object):
     """A simple user agent parser.  Used by the `UserAgent`."""
 
     platforms = (
-        ('cros', 'chromeos'),
         ('iphone|ios', 'iphone'),
-        ('ipad', 'ipad'),
         (r'darwin|mac|os\s*x', 'macos'),
         ('win', 'windows'),
         (r'android', 'android'),
@@ -32,8 +30,7 @@ class UserAgentParser(object):
         ('aix', 'aix'),
         ('sco|unix_sv', 'sco'),
         ('bsd', 'bsd'),
-        ('amiga', 'amiga'),
-        ('blackberry|playbook', 'blackberry')
+        ('amiga', 'amiga')
     )
     browsers = (
         ('googlebot', 'google'),
@@ -108,10 +105,8 @@ class UserAgent(object):
        -   `amiga`
        -   `android`
        -   `bsd`
-       -   `chromeos`
        -   `hpux`
        -   `iphone`
-       -   `ipad`
        -   `irix`
        -   `linux`
        -   `macos`
@@ -173,8 +168,6 @@ class UserAgent(object):
 
     def __nonzero__(self):
         return bool(self.browser)
-
-    __bool__ = __nonzero__
 
     def __repr__(self):
         return '<%s %r/%s>' % (
