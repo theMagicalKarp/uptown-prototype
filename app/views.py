@@ -125,7 +125,7 @@ def admin():
 
     if request.method == 'POST':
         admin_form = request.form
-        user_role = user.ADMIN_ROLE if 'is-admin' in admin_form else user.BASE_USER_ROLE
+        user_role = admin_form.get('role', user.BASE_USER_ROLE)
 
         new_user = user.create_user(admin_form.get('email'), user_role)
         registration_url = url_for('views.register', registration_id=new_user.registration_id)
