@@ -13,6 +13,7 @@ Setting Up
 Libraries Used
 -----------
 * [Flask](http://flask.pocoo.org/) *URL Routing*
+* [Flask-Login](https://flask-login.readthedocs.org/en/latest/) *User Authentication*
 * [Jinja2](http://jinja.pocoo.org/) *HTML templating*
 * [Bootstrap](http://getbootstrap.com/) *HTML Styling*
 * [jQuery](http://jquery.com/) *Wrapper for JavaScript... Also required for bootstrap... D:*
