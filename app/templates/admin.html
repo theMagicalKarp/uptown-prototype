@@ -18,7 +18,7 @@
 </div>
 
 <div class="row">
-  <form action="" method="post">
+  <form action="" class="form-horizontal" method="post">
     <div class="col-sm-8">
         <div class="input-group">
           <span class="input-group-addon">
@@ -31,14 +31,16 @@
         </div>
     </div>
 
-    <div class="col-sm-4">
-        <div class="checkbox">
-        <label>
-          <input type="checkbox" name="is-admin" value="">
-          Is Admin
-        </label>
-      </div>
+
+
+    <label class="control-label col-sm-1" >Role</label>
+    <div class="col-sm-3">
+      <select name="role" class="form-control">
+        <option value="admin">Admin</option>
+        <option value="base-user-role" selected>Base User</option>
+      </select>
     </div>
+
   </form>
 </div>
 
