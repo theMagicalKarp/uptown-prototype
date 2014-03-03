@@ -12,7 +12,38 @@
 
 
 {% block content %}
-<h1>Student Age Distribution</h1>
+<div class="row">
+  <div class="col-sm-12">
+    <h1>Chart <br><small>Show data by...</small></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="form-group col-sm-4">
+    <label for="grid">Student Type</label>
+    <select name="grid" class="form-control" id="student_type">
+      <option value="age">Age</option>
+      <option value="sex">Sex</option>
+    </select>
+  </div>
+
+  <div class="form-group col-sm-4">
+    <label for="grid">College of</label>
+    <select name="grid" class="form-control" id="college">
+      <option value="">-</option>
+      {% for college in colleges %}
+      <option value="{{college}}">{{college}}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group col-sm-4">
+    <label for="grid">Major</label>
+    <select name="grid" class="form-control" id="major" disabled>
+            <option value="">-</option>
+    </select>
+  </div>
+</div>
+
 <canvas id="myChart" width="680" height="400"></canvas>
 {% endblock %}
 
@@ -23,37 +54,57 @@
 <script>
   $(document).ready(function() {
 
-    $.ajax({
-      type: 'GET',
-      url: '{{ url_for("views.get_graph_data") }}',
-      dataType: 'json',
-      complete: function(data){
-        var age_distribution = data.responseJSON.age_distribution;
-        var graph_data = {
-          labels : [],
-          datasets : [
-            {
-              fillColor : "rgba(151,187,205,0.5)",
-              strokeColor : "rgba(151,187,205,1)",
-              data : []
-            }
-          ]
-        };
-        for(var age_group in age_distribution) {
-          if(age_distribution.hasOwnProperty(age_group)){
-            graph_data.labels.push(age_group);
-            graph_data.datasets[0].data.push(age_distribution[age_group]);
+    $("#college" ).change(function(e) {
+      var element = $(this);
+      $.ajax({
+        type: 'GET',
+        url: '/isu/' + element.val(),
+        dataType: 'json',
+        complete: function(data){
+          var majors = data.responseJSON;
+          var newOptions = '<option value="">-</option>';
+          for (var i=0; i<majors.length; i++) {
+            var major = majors[i];
+            newOptions += '<option value="' + major + '">' + major + '</option>';
           }
+          $('#major').removeAttr('disabled')
+                     .html(newOptions);
         }
+      });
 
-        var ctx = $("#myChart").get(0).getContext("2d");
-        var options = {
-        };
-
-        var myNewChart = new Chart(ctx).Bar(graph_data,options);
-      }
     });
 
+    $("#myChart").hide();
+    // $.ajax({
+    //   type: 'GET',
+    //   url: '{{ url_for("views.get_graph_data") }}',
+    //   dataType: 'json',
+    //   complete: function(data){
+    //     var age_distribution = data.responseJSON.age_distribution;
+    //     var graph_data = {
+    //       labels : [],
+    //       datasets : [
+    //         {
+    //           fillColor : "rgba(151,187,205,0.5)",
+    //           strokeColor : "rgba(151,187,205,1)",
+    //           data : []
+    //         }
+    //       ]
+    //     };
+    //     for(var age_group in age_distribution) {
+    //       if(age_distribution.hasOwnProperty(age_group)){
+    //         graph_data.labels.push(age_group);
+    //         graph_data.datasets[0].data.push(age_distribution[age_group]);
+    //       }
+    //     }
+
+    //     var ctx = $("#myChart").get(0).getContext("2d");
+    //     var options = {
+    //     };
+
+    //     var myNewChart = new Chart(ctx).Bar(graph_data,options);
+    //   }
+    // });
 
   });
 </script>
