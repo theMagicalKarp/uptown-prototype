@@ -25,32 +25,44 @@ def home():
 
 @blueprint.route('/charts', methods=['GET', 'POST'])
 def charts():
+    if not current_user.is_authenticated():
+        return redirect(url_for('views.home'), code=302)
+    if request.method == 'POST':
+        query_form = request.form
+        college = query_form.get('college')
+        major = query_form.get('major')
+        student_type = query_form.get('student_type')
+
+        students = []
+        if major:
+            students = student.Student.all().filter('major', major).fetch(limit=None)
+        elif college:
+            students = student.Student.all().filter('college', college).fetch(limit=None)
+        else:
+            students = student.Student.all().fetch(limit=None)
+
+        distribution = {}
+        for s in students:
+            key = getattr(s, student_type)
+
+            if student_type == 'gpa':
+                key = round(key, 1)
+            elif student_type == 'gender':
+                key = 'Male' if key else 'Female'
+
+            distribution[key] = distribution.get(key, 0) + 1
+
+        return json.dumps({
+            'distribution': distribution
+        })
+
+
     return render_template('chart.html', colleges=isu.colleges.keys())
 
 
 @blueprint.route('/isu/<college>/', methods=['GET'])
 def iowa_state(college):
     return json.dumps(isu.colleges.get(college, []))
-
-
-@blueprint.route('/post_student', methods=['POST'])
-def post_student():
-    student_data = json.loads(request.data)
-    student.create_student(student_data['name'], student_data['age'])
-    return 'success!', 200
-
-
-@blueprint.route('/student_graph_data', methods=['GET'])
-def get_graph_data():
-    students = student.fetch_students()
-
-    age_distribution = {}
-    for s in students:
-        age_distribution[s.age] = age_distribution.get(s.age, 0) + 1
-
-    return json.dumps({
-        'age_distribution': age_distribution
-    })
 
 
 @blueprint.route('/auth/login', methods=['GET', 'POST'])

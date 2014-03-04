@@ -24,7 +24,7 @@ agriculture = [
     'Public Service and Administration in Agriculture',
     'Diet and Exercise',
     'Seed Science',
-    'Dietetics',
+    'Dietetics'
 ]
 
 
