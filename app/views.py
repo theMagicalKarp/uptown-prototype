@@ -13,46 +13,24 @@ from flask_login import current_user
 
 from app.models import student
 from app.models import user
+from app.models import isu
 
 blueprint = Blueprint('views', __name__)
 
 
 @blueprint.route('/', methods=['GET'])
 def home():
-    # chooses a random youtube link to display on the home page!
-    youtube_links = [
-        'NNXQAp0m5nA',
-        'EDXMrLoME8U',
-        'XeDM1ZjMK50',
-        'blpe_sGnnP4',
-        'ECceiU32vGs',
-        'KJRRCbrVQp4',
-        'UBQP9gEldRk',
-        'UhHhXukovMU',
-        't_jEm6FnaPM',
-        'hhP8Da1qTs8',
-        'A_aJBAzw_ls',
-        '7QLSRMoKKS0',
-        'KhrJI2zbE04',
-        '4txVqr1eNwc'
-    ]
-    return render_template('home.html', youtube_link=random.choice(youtube_links))
+    return render_template('home.html')
 
 
-@blueprint.route('/bootstrap', methods=['GET'])
-def bootstrap():
-    return render_template('bootstrap_examples.html')
+@blueprint.route('/charts', methods=['GET', 'POST'])
+def charts():
+    return render_template('chart.html', colleges=isu.colleges.keys())
 
 
-@blueprint.route('/model_example', methods=['GET'])
-def model_example():
-    all_students = student.fetch_students()
-    return render_template('modeling.html', students=all_students)
-
-
-@blueprint.route('/chart_demo', methods=['GET'])
-def chart_demo():
-    return render_template('chart.html')
+@blueprint.route('/isu/<college>/', methods=['GET'])
+def iowa_state(college):
+    return json.dumps(isu.colleges.get(college, []))
 
 
 @blueprint.route('/post_student', methods=['POST'])
