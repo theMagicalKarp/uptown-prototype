@@ -7,30 +7,33 @@ class Student(db.Model):
     age = db.IntegerProperty(required=True)
 	gpa = db.FloatProperty(required=True)
 	major = db.StringProperty(required=True)
-	department = db.StringPropperty(required=True)
+	college = db.StringPropperty(required=True)
 	gender = db.BooleanProperty(required=True)
 	homestate = db.StringProperty(required=True)
 
 def fetch_students_by_gpa(gpa):
 	return Student.all().filter('gpa', gpa).fetch(limit=None)
 
-def fetch_students_by_department(department):
-	return Student.all().filter('department', department).fetch(limit=None)
+def fetch_students_by_department(college):
+	return Student.all().filter('college', college).fetch(limit=None)
 	
 def fetch_students_by_gender(gender):
 	return Student.all().filter('gender', gender).fetch(limit=None)
 		
 def fetch_students_by_age(age):
     return Student.all().filter('age', age).fetch(limit=None)
+	
+def fetch_students_by_age(major):
+    return Student.all().filter('major', major).fetch(limit=None)
 
 def fetch_students_by_homestate(homestate):
 	return Student.all().filter('homestate', homestate).fetch(limit=None)
-	
-def fetch_students(limit=100, offset=0):
-    return Student.all().fetch(limit=limit, offset=offset)
 
-def create_student(name, age):
-    new_student = Student(name=name, age=int(age)) # Create new database model!
+def fetch_students(limit=100, offset=0):
+return Student.all().fetch(limit=limit, offset=offset)
+
+def create_student(age, gpa, gender, major, college, homestate):
+    new_student = Student(age=int(age), gpa = float(gpa), gender = gender, major = major, college = college, homestate = homestate) # Create new database model!
     new_student.put() # Store it in the database!
 
     return new_student
