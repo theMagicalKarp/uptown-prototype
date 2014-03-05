@@ -24,14 +24,17 @@ What's Going On?!
 
 [__/libs/:__](https://github.com/theMagicalKarp/uptown-prototype/tree/master/libs) Contains external python libraries such as Flask, werkzeug, ect...
 
-[__/app/views.py:__](https://github.com/theMagicalKarp/uptown-prototype/blob/master/app/views.py) Contains instructions of how to map our application to specific urls. For example this [http://uptown-prototype.appspot.com/bootstrap](http://uptown-prototype.appspot.com/bootstrap) is generated from this
+[__/app/views.py:__](https://github.com/theMagicalKarp/uptown-prototype/blob/master/app/views.py) Contains instructions of how to map our application to specific urls. For example this [http://uptown-prototype.appspot.com/](http://uptown-prototype.appspot.com/) is generated from this
 ```python
-@blueprint.route('/bootstrap', methods=['GET'])
-def bootstrap():
-    return render_template('bootstrap_examples.html')
+@blueprint.route('/', methods=['GET'])
+def home():
+    return render_template('home.html')
 ```
 
 [__/app/models/students.py:__](https://github.com/theMagicalKarp/uptown-prototype/blob/master/app/models/student.py) This holds information on how our student objects should be stored in the database.
 
 [__/app/templates/:__](https://github.com/theMagicalKarp/uptown-prototype/blob/master/app/templates) This directory holds html template files that are to be rendered by jinja2.  Each html file extends a base html file that describes how each page should look.  This helps enforce consistancy among all of the pages.  You can find out more about jinja2 templating [here](http://jinja.pocoo.org/docs/templates/).
 
+[__/app/models/isu.py:__](https://github.com/theMagicalKarp/uptown-prototype/blob/master/app/models/isu.py)  This holds information about Iowa States majors and colleges staticly in memory for quick refrence in our application.
+
+[__/app/models/user.py:__](https://github.com/theMagicalKarp/uptown-prototype/blob/master/app/models/user.py)  This holds information about our user models and authentication.
