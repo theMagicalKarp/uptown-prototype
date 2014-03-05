@@ -10,8 +10,9 @@ Setting Up
 * Checkout this repository ```git clone https://github.com/theMagicalKarp/uptown-prototype.git uptown```
 * Start GAE SDK and select this project.
 
-Libraries Used
+Libraries and Frameworks Used
 -----------
+* [Google App Engine](https://developers.google.com/appengine/) *Web framework for running our python enviroment*
 * [Flask](http://flask.pocoo.org/) *URL Routing*
 * [Flask-Login](https://flask-login.readthedocs.org/en/latest/) *User Authentication*
 * [Jinja2](http://jinja.pocoo.org/) *HTML templating*
