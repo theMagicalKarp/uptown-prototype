@@ -13,7 +13,8 @@ for x in xrange(1000):
             gpa=random.random() * 3.0 + 1.0,
             gender=random.choice([True, False]),
             college=college,
-            major=major
+            major=major,
+            oncampus=random.choice([True, False])
         ))
 
 db.put(new_students)
