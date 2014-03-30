@@ -49,7 +49,7 @@ def charts():
                 key = round(key, 1)
             elif student_type == 'gender':
                 key = 'Male' if key else 'Female'
-            elif student_type == 'residence':
+            elif student_type == 'oncampus':
                 key = 'On Campus' if key else 'Off Campus'
             elif student_type == 'major':
                 key = s.major
