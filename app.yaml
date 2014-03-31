@@ -19,4 +19,3 @@ handlers:
 
 - url: /.*
   script: app.app
-
