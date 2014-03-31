@@ -25,6 +25,7 @@ def home():
 
 @blueprint.route('/charts', methods=['GET', 'POST'])
 def charts():
+
     if not current_user.is_authenticated():
         return redirect(url_for('views.home'), code=302)
     if request.method == 'POST':
@@ -32,14 +33,17 @@ def charts():
         college = query_form.get('college')
         major = query_form.get('major')
         student_type = query_form.get('student_type')
+        year = int(query_form.get('year'))
 
         students = []
         if major:
-            students = student.Student.all().filter('major', major).fetch(limit=None)
+            student_query = student.Student.all().filter('major', major)
         elif college:
-            students = student.Student.all().filter('college', college).fetch(limit=None)
+            student_query = student.Student.all().filter('college', college)
         else:
-            students = student.Student.all().fetch(limit=None)
+            student_query = student.Student.all()
+        students = student_query.filter('year', year).fetch(limit=None)
+
 
         distribution = {}
         for s in students:
