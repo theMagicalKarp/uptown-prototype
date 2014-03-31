@@ -14,7 +14,8 @@ for x in xrange(1000):
             gender=random.choice([True, False]),
             college=college,
             major=major,
-            oncampus=random.choice([True, False])
+            oncampus=random.choice([True, False]),
+            year=random.choice([2012, 2013, 2014])
         ))
 
 db.put(new_students)

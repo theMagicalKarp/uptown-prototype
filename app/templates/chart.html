@@ -6,16 +6,34 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.1.2/nprogress.css">
 <style type="text/css">
   canvas {
-    padding-top: 50px;
+    padding-top: 25px;
+  }
+  #legend > span {
+    padding-right: 25px;
   }
 </style>
 {% endblock %}
 
 
 {% block content %}
+
+
 <div class="row">
   <div class="col-sm-12">
     <h1>Chart <br><small>Show data by...</small></h1>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="form-group col-sm-4">
+    <label for="student_type">Year</label>
+    <select name="student_year" class="form-control" id="student_year">
+      <option value="all" selected>all recorded years</option>
+      <option value="2012">2012</option>
+      <option value="2013" >2013</option>
+      <option value="2014">2014</option>
+    </select>
   </div>
 </div>
 
@@ -56,11 +74,17 @@
   </div>
 </div>
 
+<div class="row">
+  <div id="legend" class="col-sm-12">
+
+  </div>
+</div>
+
 <canvas id="myChart" width="700" height="400"></canvas>
 {% endblock %}
 
 {% block js %}
-<script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.1.2/nprogress.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.1.2/nprogress.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
 <script>
   Array.min = function( array ){
@@ -69,7 +93,9 @@
   Array.max = function( array ){
       return Math.max.apply( Math, array );
   };
-
+  var isInArray = function(array, search) {
+      return (array.indexOf(search) >= 0) ? true : false; 
+  };
 
   $(document).ready(function() {
       NProgress.configure({ trickleRate: 0.10, trickleSpeed: 350 });
@@ -78,7 +104,8 @@
       var data = {
         major: $('#major').val(),
         college: $('#college').val(),
-        student_type: $('#student_type').val()
+        student_type: $('#student_type').val(),
+        year: $('#student_year').val()
       };
       $.ajax({
         type: 'POST',
@@ -88,22 +115,52 @@
         complete: function(data){
           NProgress.done();
           var distribution = data.responseJSON.distribution;
+
           var graph_data = {
             labels : [],
             datasets : [
               {
-                fillColor : "rgba(151,187,205,0.5)",
+                fillColor : "rgba(151,187,205,0.2)",
                 strokeColor : "rgba(151,187,205,1)",
+                data : []
+              },
+              {
+                fillColor : "rgba(220,220,220,0.2)",
+                strokeColor : "rgba(220,220,220,1)",
+                data : []
+              },
+              {
+                fillColor : "rgba(151,205,187,0.2)",
+                strokeColor : "rgba(151,205,187,1)",
                 data : []
               }
             ]
           };
-          for(var distribution_group in distribution) {
-            if(distribution.hasOwnProperty(distribution_group)){
-              graph_data.labels.push(distribution_group);
-              graph_data.datasets[0].data.push(distribution[distribution_group]);
+
+          $('#legend').html('');
+          var currentColorIndex = 0;
+          for(var year in distribution) {
+            if (distribution.hasOwnProperty(year)) {
+
+              for(var distribution_group in distribution[year]) {
+                if(distribution[year].hasOwnProperty(distribution_group)){
+                  if (! isInArray(graph_data.labels, distribution_group))
+                    graph_data.labels.push(distribution_group);
+                  graph_data.datasets[currentColorIndex].data.push(distribution[year][distribution_group]);
+                }
+              }
+
+              $('#legend').append([
+                '<span style="color:',graph_data.datasets[currentColorIndex].strokeColor,';">',
+                year,
+                '</span>'].join('')
+              );
+              currentColorIndex = currentColorIndex + 1;
+              
             }
           }
+
+          console.log(graph_data);
 
           graph_data.labels.sort(function(a, b) {
             return a - b; // I'm cheating some data here...
@@ -112,12 +169,16 @@
           var ctx = $("#myChart").get(0).getContext("2d");
           var options = {
             scaleOverride : true,
-            scaleSteps : Array.max(graph_data.datasets[0].data) - Array.min(graph_data.datasets[0].data)+2,
+            scaleSteps : Array.max(graph_data.datasets[0].data.concat(graph_data.datasets[1].data).concat( graph_data.datasets[2].data)) - Array.min(graph_data.datasets[0].data.concat(graph_data.datasets[1].data).concat( graph_data.datasets[2].data))+2,
             scaleStepWidth : 1,
-            scaleStartValue : Array.min(graph_data.datasets[0].data)-2
+            scaleStartValue : Array.min(graph_data.datasets[0].data.concat(graph_data.datasets[1].data).concat( graph_data.datasets[2].data))-2
           };
 
-          var myNewChart = new Chart(ctx).Bar(graph_data,options);
+          var studentType = $('#student_type').val();
+          if (studentType === 'gender' || studentType === 'oncampus')
+            new Chart(ctx).Bar(graph_data,options);
+          else
+            new Chart(ctx).Line(graph_data,options);
         }
       });
     });

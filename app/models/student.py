@@ -11,6 +11,7 @@ class Student(db.Model):
     gender = db.BooleanProperty(required=True)
     oncampus = db.BooleanProperty(required=True)
     homestate = db.StringProperty()
+    year = db.IntegerProperty(required=True)
 
 def fetch_students_by_gpa(gpa):
     return Student.all().filter('gpa', gpa).fetch(limit=None)

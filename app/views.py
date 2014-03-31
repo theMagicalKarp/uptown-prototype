@@ -25,6 +25,7 @@ def home():
 
 @blueprint.route('/charts', methods=['GET', 'POST'])
 def charts():
+
     if not current_user.is_authenticated():
         return redirect(url_for('views.home'), code=302)
     if request.method == 'POST':
@@ -32,21 +33,34 @@ def charts():
         college = query_form.get('college')
         major = query_form.get('major')
         student_type = query_form.get('student_type')
+        year = query_form.get('year')
+
+        try:
+            year = int(year)
+        except ValueError:
+            pass
+
 
         students = []
         if major:
-            students = student.Student.all().filter('major', major).fetch(limit=None)
+            student_query = student.Student.all().filter('major', major)
         elif college:
-            students = student.Student.all().filter('college', college).fetch(limit=None)
+            student_query = student.Student.all().filter('college', college)
         else:
-            students = student.Student.all().fetch(limit=None)
+            student_query = student.Student.all()
+
+        if year == 'all':
+            students = student_query.fetch(limit=None)
+        else:
+            students = student_query.filter('year', year).fetch(limit=None)
+
 
         distribution = {}
         for s in students:
             key = getattr(s, student_type)
 
             if student_type == 'gpa':
-                key = round(key, 1)
+                key = "%.1f" % (key,)
             elif student_type == 'gender':
                 key = 'Male' if key else 'Female'
             elif student_type == 'oncampus':
@@ -54,7 +68,8 @@ def charts():
             elif student_type == 'major':
                 key = s.major
 
-            distribution[key] = distribution.get(key, 0) + 1
+            distribution[s.year] = distribution.get(s.year, {})
+            distribution[s.year][key] = distribution[s.year].get(key, 0) + 1
 
         return json.dumps({
             'distribution': distribution
