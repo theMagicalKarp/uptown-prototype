@@ -94,7 +94,7 @@ def login(email, password):
     hashed_password, hash_code = hash_password(password, user.hash_code)
     if user.password == hashed_password:
         login_user(user)
-        return True;
+        return True
 
     return False
 
