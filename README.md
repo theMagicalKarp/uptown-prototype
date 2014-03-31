@@ -10,6 +10,13 @@ Setting Up
 * Checkout this repository ```git clone https://github.com/theMagicalKarp/uptown-prototype.git uptown```
 * Start GAE SDK and select this project.
 
+Running Unit Tests
+-----------
+To run unit tests with included frameworks use the testing script.
+With the script you can target the GAE SDK and testing directory.
+For example ```python test.py /usr/local/google_appengine .``` runs all the unit tests.
+
+
 Libraries and Frameworks Used
 -----------
 * [Google App Engine](https://developers.google.com/appengine/) *Web framework for running our python enviroment*
