@@ -27,7 +27,7 @@
 
 <div class="row">
   <div class="form-group col-sm-4">
-    <label for="student_type">Year</label>
+    <label for="student_year">Year</label>
     <select name="student_year" class="form-control" id="student_year">
       <option value="all" selected>all recorded years</option>
       <option value="2012">2012</option>
@@ -81,6 +81,7 @@
 </div>
 
 <canvas id="myChart" width="700" height="400"></canvas>
+
 {% endblock %}
 
 {% block js %}
@@ -160,18 +161,26 @@
             }
           }
 
-          console.log(graph_data);
+          if(currentColorIndex < 2)
+              graph_data.datasets.splice(currentColorIndex, 3 - currentColorIndex);
 
           graph_data.labels.sort(function(a, b) {
             return a - b; // I'm cheating some data here...
           });
 
           var ctx = $("#myChart").get(0).getContext("2d");
+          var steps = [];
+
+          for (var i = 0; i < currentColorIndex; i++)
+          {
+            steps = steps.concat(graph_data.datasets[i].data);
+          }
+
           var options = {
             scaleOverride : true,
-            scaleSteps : Array.max(graph_data.datasets[0].data.concat(graph_data.datasets[1].data).concat( graph_data.datasets[2].data)) - Array.min(graph_data.datasets[0].data.concat(graph_data.datasets[1].data).concat( graph_data.datasets[2].data))+2,
+            scaleSteps : Array.max(steps) - Array.min(steps)+2,
             scaleStepWidth : 1,
-            scaleStartValue : Array.min(graph_data.datasets[0].data.concat(graph_data.datasets[1].data).concat( graph_data.datasets[2].data))-2
+            scaleStartValue : Array.min(steps)-2
           };
 
           var studentType = $('#student_type').val();
