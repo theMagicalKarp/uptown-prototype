@@ -1,10 +1,8 @@
 import unittest
 import optparse
 import sys
-# export GAE="/usr/local/google_appengine:/usr/local/google_appengine/lib:/usr/local/google_appengine/lib/yaml-3.10:/usr/local/google_appengine/lib/webob-1.2.3"
-# export PYTHONPATH="$PYTHONPATH:$GAE"
-# export PATH="$PATH:$GAE"
 
+# python test.py /usr/local/google_appengine .
 
 USAGE = """%prog SDK_PATH TEST_PATH
 Run unit tests for App Engine apps.
