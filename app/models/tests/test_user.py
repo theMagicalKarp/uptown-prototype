@@ -122,8 +122,8 @@ class LoginTestCase(unittest.TestCase):
     @patch('app.models.user.login_user')
     @patch('app.models.user.logout_user')
     def test_password_incorrect(self, logout_user_mock, login_user_mock):
-        new_user = user.create_user('foobar@gmail.com', 'admin')
-        new_user = user.register(new_user.registration_id, '1234password')
+        new_user = user.create_user('a@gmail.com', 'admin')
+        new_user = user.register(new_user.registration_id, 'aaaaaa')
 
         self.assertFalse(user.login('foobar@gmail.com', 'wrong password'))
 
