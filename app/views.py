@@ -60,7 +60,7 @@ def charts():
             key = getattr(s, student_type)
 
             if student_type == 'gpa':
-                key = round(key, 1)
+                key = "%.1f" % (key,)
             elif student_type == 'gender':
                 key = 'Male' if key else 'Female'
             elif student_type == 'oncampus':
