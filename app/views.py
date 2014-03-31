@@ -33,7 +33,13 @@ def charts():
         college = query_form.get('college')
         major = query_form.get('major')
         student_type = query_form.get('student_type')
-        year = int(query_form.get('year'))
+        year = query_form.get('year')
+
+        try:
+            year = int(year)
+        except ValueError:
+            pass
+
 
         students = []
         if major:
@@ -42,7 +48,11 @@ def charts():
             student_query = student.Student.all().filter('college', college)
         else:
             student_query = student.Student.all()
-        students = student_query.filter('year', year).fetch(limit=None)
+
+        if year == 'all':
+            students = student_query.fetch(limit=None)
+        else:
+            students = student_query.filter('year', year).fetch(limit=None)
 
 
         distribution = {}
@@ -58,7 +68,8 @@ def charts():
             elif student_type == 'major':
                 key = s.major
 
-            distribution[key] = distribution.get(key, 0) + 1
+            distribution[s.year] = distribution.get(s.year, {})
+            distribution[s.year][key] = distribution[s.year].get(key, 0) + 1
 
         return json.dumps({
             'distribution': distribution
