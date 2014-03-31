@@ -34,8 +34,8 @@ def fetch_students_by_homestate(homestate):
 def fetch_students(limit=100, offset=0):
     return Student.all().fetch(limit=limit, offset=offset)
 
-def create_student(age, gpa, gender, major, college, homestate, oncampus):
-    new_student = Student(age=int(age), gpa = float(gpa), gender = gender, major = major, college = college, homestate = homestate, oncampus = oncampus) # Create new database model!
+def create_student(age, gpa, gender, major, college, homestate, oncampus, year):
+    new_student = Student(age=int(age), gpa = float(gpa), gender = gender, major = major, college = college, homestate = homestate, oncampus = oncampus, year=year) # Create new database model!
     new_student.put() # Store it in the database!
 
     return new_student
